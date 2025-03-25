@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtArena - Game</title>
+    <script defer src="scriptGame.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #002147, #000000), url('background1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .word {
+            background-color: white;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 6%;
+            margin-bottom: 1%;
+        }
+
+        .leaderboard {
+            display: flex;
+            background-color: white;
+            width: 19%;
+            height: 60%;
+            margin-left: 5%;
+            height: 75vh;
+            margin-bottom: 10px;
+        }
+
+        .canvas {
+            display: flex;
+            background-color: white;
+            width: 41.95%;
+            height: 60%;
+            margin-left: 5%;
+            height: 75vh;
+            margin-bottom: 10px;
+        }
+
+        .chatbox {
+            display: flex;
+            background-color: white;
+            width: 19%;
+            height: 60%;
+            margin-left: 5%;
+            height: 75vh;
+            margin-bottom: 10px;
+        }
+
+        .fullpage {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="word">
+        <h3>Given word :</h3>
+        <p>DOG</p>
+    </div>
+    <div class="fullpage">
+
+        <div class="leaderboard">
+            <p>ranking will be diplayed here</p>
+        </div>
+        <div class="canvas">
+            <p>Draw here</p>
+        </div>
+        <div class="chatbox">
+            <p>talk to your friends</p>
+        </div>
+    </div>
+</body>
+
+</html>
