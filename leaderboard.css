@@ -12,10 +12,10 @@ body {
 
 
 .game-container {
-    width: 90%;
-    max-width: 1200px;
-    height: 90vh;
-    background-color: #11264d;
+    width: 100%;
+    max-width: 1400px;
+    height: 100vh;
+    background-color: hsl(219, 64%, 18%, 0.7);
     border-radius: 10px;
     padding: 15px;
     display: flex;
@@ -47,14 +47,45 @@ header {
     animation: bounce 1.5s infinite alternate ease-in-out;
 }
 
-.artarena-logo span:nth-child(1) { animation-delay: 0s; color: #FFD700; }
-.artarena-logo span:nth-child(2) { animation-delay: 0.1s; color: #FF4500; }
-.artarena-logo span:nth-child(3) { animation-delay: 0.2s; color: #32CD32; }
-.artarena-logo span:nth-child(4) { animation-delay: 0.3s; color: #00BFFF; }
-.artarena-logo span:nth-child(5) { animation-delay: 0.4s; color: #FF69B4; }
-.artarena-logo span:nth-child(6) { animation-delay: 0.5s; color: #8A2BE2; }
-.artarena-logo span:nth-child(7) { animation-delay: 0.6s; color: #FF6347; }
-.artarena-logo span:nth-child(8) { animation-delay: 0.7s; color: #FFD700; }
+.artarena-logo span:nth-child(1) {
+    animation-delay: 0s;
+    color: #FFD700;
+}
+
+.artarena-logo span:nth-child(2) {
+    animation-delay: 0.1s;
+    color: #FF4500;
+}
+
+.artarena-logo span:nth-child(3) {
+    animation-delay: 0.2s;
+    color: #32CD32;
+}
+
+.artarena-logo span:nth-child(4) {
+    animation-delay: 0.3s;
+    color: #00BFFF;
+}
+
+.artarena-logo span:nth-child(5) {
+    animation-delay: 0.4s;
+    color: #FF69B4;
+}
+
+.artarena-logo span:nth-child(6) {
+    animation-delay: 0.5s;
+    color: #8A2BE2;
+}
+
+.artarena-logo span:nth-child(7) {
+    animation-delay: 0.6s;
+    color: #FF6347;
+}
+
+.artarena-logo span:nth-child(8) {
+    animation-delay: 0.7s;
+    color: #FFD700;
+}
 
 .palette-icon {
     width: 50px;
@@ -64,13 +95,23 @@ header {
 }
 
 @keyframes bounce {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-8px); }
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(-8px);
+    }
 }
 
 @keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .game-content {
@@ -85,6 +126,7 @@ header {
     padding: 10px;
     text-align: center;
     border-radius: 5px;
+    height: 86.3%;
     overflow-y: auto;
 }
 
@@ -120,6 +162,8 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .top-bar {
@@ -141,6 +185,7 @@ header {
 .word {
     font-size: 20px;
     font-weight: bold;
+    width: fit-content;
 }
 
 .settings {
@@ -171,6 +216,7 @@ canvas {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    height: 86.3%;
 }
 
 .right-panel h3 {
@@ -210,6 +256,7 @@ input {
     margin-top: 10px;
     border-radius: 5px;
 }
+
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #0b1736, #041024);
@@ -323,6 +370,7 @@ input {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -333,8 +381,13 @@ input {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0px);
     }
+}
+
+.message-box {
+    width: 93%;
 }
