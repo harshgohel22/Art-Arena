@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtArena - Game Room</title>
-    <link rel="stylesheet" href="leaderboard.css">
+    <link rel="stylesheet" href="game.css">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
             <div class="logo-container">
                 <h1 class="artarena-logo">
                     <span>A</span><span>r</span><span>t</span><span>A</span><span>r</span><span>e</span><span>n</span><span>a</span>
-                    <img src="paintpalette.png" alt="Palette" class="palette-icon">
+                    <img src="images/paintpalette.png" alt="Palette" class="palette-icon">
                 </h1>
             </div>
         </header>
@@ -38,12 +38,17 @@
 
             <div class="main-game">
                 <div class="top-bar">
-                    <div class="timer">⏳ 90s</div>
+                    <div class="timer" id="timer">⏳ 90s</div>
                     <div class="word">Draw this: <b id="draw-word">Random Word</b></div>
                     <div class="settings">⚙</div>
                 </div>
                 <div class="drawing-area">
                     <canvas id="canvas"></canvas>
+                </div>
+                <div class="tools">
+                    <button class="pencilBtn">✏️</button>
+                    <button class="eraserBtn">🧽</button>
+                    <button class="eraseAllBtn">Vanish</button>
                 </div>
             </div>
 
@@ -58,8 +63,12 @@
                 </div>
                 <input type="text" class="message-box" placeholder="Type your guess here...">
             </div>
+
         </div>
     </div>
+
+    <script src="game.js"></script>
 </body>
+
 
 </html>

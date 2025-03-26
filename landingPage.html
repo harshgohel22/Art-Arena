@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtArena</title>
-    <link rel="stylesheet" href="stylesIndex.css">
+    <link rel="stylesheet" href="landingpage.css">
     <link rel="icon" type="image/png" href="logo2.png">
 </head>
 
@@ -33,8 +33,11 @@
                 <button class="char-btn" id="nextCharacter">▶</button>
             </div>
 
-            <button class="play" onclick="window.location.href='https://www.youtube.com'">PLAY!</button>
-            <button class="room">CREATE / JOIN ROOM</button>
+            <a href="game.html">
+                <button class="play">PLAY!</button>
+            </a>
+
+            <button class="room" onclick="window.location.href='room.html'">CREATE / JOIN ROOM</button>
         </div>
     </div>
 
@@ -87,7 +90,7 @@
         });
         document.querySelector(".play").addEventListener("click", () => {
             localStorage.setItem("selectedCharacter", characters[currentIndex]);
-            window.location.href = "nextpage.html"; 
+            window.location.href = "nextpage.html";
         });
     </script>
 </body>
