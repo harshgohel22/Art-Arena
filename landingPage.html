@@ -62,8 +62,7 @@
 
         <section class="how-to-play">
             <h2>How to Play</h2>
-            <img src="https://i.postimg.cc/pXMFgP2K/DALL-E-2025-03-19-14-40-27-A-hand-drawn-style-illustration-of-a-game-interface-that-says-GET-A-WO.webp"
-                alt="Choose a word">
+            <img src="images/how-to-play.png" alt="Choose a word">
             <p>Get the word -> Start drawing -> Compete with friends!</p>
         </section>
     </div>
@@ -73,9 +72,12 @@
     </footer>
 
     <script>
-        const characters = ["images/character1.png", "images/character2.png", "images/character3.png", "images/character4.png",
-            "images/character5.png", "images/character6.png", "images/character7.png", "images/character8.png",
-            "images/character9.png", "images/character10.png"];
+        const characters = [
+            "images/character1.png", "images/character2.png", "images/character3.png",
+            "images/character4.png", "images/character5.png", "images/character6.png",
+            "images/character7.png", "images/character8.png", "images/character9.png",
+            "images/character10.png"
+        ];
         let currentIndex = 0;
         const characterImage = document.getElementById("characterImage");
 
@@ -88,6 +90,7 @@
             currentIndex = (currentIndex + 1) % characters.length;
             characterImage.src = characters[currentIndex];
         });
+
         document.querySelector(".play").addEventListener("click", () => {
             localStorage.setItem("selectedCharacter", characters[currentIndex]);
             window.location.href = "nextpage.html";
