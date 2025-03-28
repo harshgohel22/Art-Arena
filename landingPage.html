@@ -11,7 +11,22 @@
 
 <body>
     <div class="landing-page">
+        
+        <div class="doodle-container">
+            <img src="images/elements/doodle1.png" alt="Doodle 1" class="doodle doodle1">
+            <img src="images/elements/doodle2.png" alt="Doodle 2" class="doodle doodle2">
+            <img src="images/elements/doodle3.png" alt="Doodle 3" class="doodle doodle3">
+            <img src="images/elements/doodle4.png" alt="Doodle 4" class="doodle doodle4">
+            <img src="images/elements/doodle5.png" alt="Doodle 5" class="doodle doodle5">
+            <img src="images/elements/doodle6.png" alt="Doodle 6" class="doodle doodle6">
+            <img src="images/elements/doodle7.png" alt="Doodle 7" class="doodle doodle7">
+            <img src="images/elements/doodle8.png" alt="Doodle 8" class="doodle doodle8">
+            <img src="images/elements/doodle9.png" alt="Doodle 9" class="doodle doodle9">
+            <img src="images/elements/doodle10.png" alt="Doodle 10" class="doodle doodle10">
+        </div>
+
         <div class="container">
+            <!-- Title with wobbly animation -->
             <h1>
                 <span class="wobbly-text">A</span>
                 <span class="wobbly-text">r</span>
@@ -24,29 +39,38 @@
                 <span class="wobbly-text">🎨</span>
             </h1>
 
+            <!-- Input box for player's name -->
             <input type="text" placeholder="Enter Your Name" class="namebox">
+            
+            <!-- Button to choose player character -->
             <button class="character">CHOOSE YOUR PLAYER ➡️</button>
+            
             <p> </p>
+
+            <!-- Character selection area -->
             <div class="character-selection">
                 <button class="char-btn" id="prevCharacter">◀</button>
                 <img id="characterImage" src="images/character1.png" alt="Character">
                 <button class="char-btn" id="nextCharacter">▶</button>
             </div>
 
+            <!-- Play button -->
             <a href="game.html">
                 <button class="play">PLAY!</button>
             </a>
 
+            <!-- Room button -->
             <button class="room" onclick="window.location.href='room.html'">CREATE / JOIN ROOM</button>
         </div>
     </div>
 
+    <!-- Scrollable About Section (COMMENTED OUT) -->
+    
     <div class="about-section">
         <section class="about">
             <h2>About</h2>
             <p><strong>ArtArena</strong> is a fun multiplayer drawing and AI-powered recognition game.</p>
-            <p>Each round, players draw a given word, and an AI model analyzes the drawings to determine which one is
-                the most accurate match.</p>
+            <p>Each round, players draw a given word, and an AI model analyzes the drawings to determine which one is the most accurate match.</p>
             <p>The AI model then announces the winner based on the most accurate drawing!</p>
         </section>
 
@@ -66,11 +90,14 @@
             <p>Get the word -> Start drawing -> Compete with friends!</p>
         </section>
     </div>
+    
 
+    <!-- Footer section with links -->
     <footer>
         <p><a href="#">Contact</a> | <a href="#">Terms of Service</a> | <a href="#">Privacy</a></p>
     </footer>
 
+    <!-- JavaScript for character selection -->
     <script>
         const characters = [
             "images/character1.png", "images/character2.png", "images/character3.png",
@@ -81,16 +108,19 @@
         let currentIndex = 0;
         const characterImage = document.getElementById("characterImage");
 
+        // Previous character button
         document.getElementById("prevCharacter").addEventListener("click", () => {
             currentIndex = (currentIndex - 1 + characters.length) % characters.length;
             characterImage.src = characters[currentIndex];
         });
 
+        // Next character button
         document.getElementById("nextCharacter").addEventListener("click", () => {
             currentIndex = (currentIndex + 1) % characters.length;
             characterImage.src = characters[currentIndex];
         });
 
+        // Store selected character in local storage
         document.querySelector(".play").addEventListener("click", () => {
             localStorage.setItem("selectedCharacter", characters[currentIndex]);
             window.location.href = "nextpage.html";
