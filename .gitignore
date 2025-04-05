@@ -1,1 +1,7 @@
-my/
+bin/
+ArtArena.ipynb
+include/
+lib/
+numpy_practice.py
+pyvenv.cfg
+share/
