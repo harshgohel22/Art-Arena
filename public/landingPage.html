@@ -11,11 +11,15 @@
 
 <body>
     <div class="landing-page">
+
         <div class="doodle-container">
             <img src="images/doodle1.png" alt="Doodle 1" class="doodle doodle1">
+
+
         </div>
 
         <div class="container">
+            <!-- Title with wobbly animation -->
             <h1>
                 <span class="wobbly-text">A</span>
                 <span class="wobbly-text">r</span>
@@ -28,9 +32,14 @@
                 <span class="wobbly-text">🎨</span>
             </h1>
 
+
             <input type="text" placeholder="Enter Your Name" class="namebox" id="playerName">
+
             <button class="character">CHOOSE YOUR PLAYER ➡️</button>
+
             <p> </p>
+
+            <!-- Character selection area -->
             <div class="character-selection">
                 <button class="char-btn" id="prevCharacter">◀</button>
                 <img id="characterImage" src="images/character1.png" alt="Character">
@@ -41,6 +50,7 @@
             <button class="room" id="roomButton" disabled>CREATE / JOIN ROOM</button>
         </div>
     </div>
+
     <div class="about-section">
         <section class="about">
             <h2>About</h2>
@@ -67,6 +77,7 @@
             <p>Get the word -> Start drawing -> Compete with friends!</p>
         </section>
     </div>
+
     <div class="footer">
         <footer>
             <button onclick="window.location.href='terms.html'" class="contact">Contact</button>
@@ -75,6 +86,7 @@
             <!-- <p><a href="">Contact</a> | <a href="terms.html">Terms of Service</a> | <a href="#">Privacy</a></p> -->
         </footer>
     </div>
+
     <script>
         const characters = [
             "images/character1.png", "images/character2.png", "images/character3.png",
@@ -88,18 +100,22 @@
         const roomButton = document.getElementById("roomButton");
         const playerNameInput = document.getElementById("playerName");
 
+
         // Character selection logic
+
         document.getElementById("prevCharacter").addEventListener("click", () => {
             currentIndex = (currentIndex - 1 + characters.length) % characters.length;
             characterImage.src = characters[currentIndex];
             enableButtons();
         });
 
+        // Next character button
         document.getElementById("nextCharacter").addEventListener("click", () => {
             currentIndex = (currentIndex + 1) % characters.length;
             characterImage.src = characters[currentIndex];
             enableButtons();
         });
+
 
         // Enable buttons only if a character is selected and name is entered
         function enableButtons() {
@@ -119,6 +135,7 @@
                 return;
             }
             localStorage.setItem("playerName", playerName);
+
             localStorage.setItem("selectedCharacter", characters[currentIndex]);
             fetch('/create-room') // Automatically create a room for solo play
                 .then(response => response.json())
