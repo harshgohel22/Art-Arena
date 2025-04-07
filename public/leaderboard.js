@@ -1,23 +1,22 @@
-// Retrieve player information from localStorage
-const playerName = localStorage.getItem("playerName");
-const selectedCharacter = localStorage.getItem("selectedCharacter");
+// Retrieve leaderboard data from localStorage
+const leaderboardData = JSON.parse(localStorage.getItem("leaderboardData"));
 
-// Listen for the updated player list from the server
-socket.on("updatePlayerList", (players) => {
-    const playerList = document.querySelector(".left-panel ul");
-    if (!playerList) {
-        // If the leaderboard container doesn't exist, create it
-        const ul = document.createElement("ul");
-        document.querySelector(".left-panel").appendChild(ul);
-    }
+if (leaderboardData && leaderboardData.length > 0) {
+    const leaderboardList = document.querySelector(".left-panel ul");
+    leaderboardList.innerHTML = ""; // Clear the current list
 
-    playerList.innerHTML = ""; // Clear the current list
-
-    players.forEach((player) => {
+    leaderboardData.forEach((player, index) => {
         const listItem = document.createElement("li");
         listItem.innerHTML = `
-            <img src="${player.character}" class="avatar"> 
-            ${player.name}`;
-        playerList.appendChild(listItem);
+            <img src="${player.avatar}" class="avatar"> 
+            <span>${index + 1}. ${player.name}</span>`;
+        leaderboardList.appendChild(listItem);
     });
-});
+
+    // Display the winner
+    const winnerName = leaderboardData[0]?.name || "No Winner";
+    document.querySelector(".winner-text").textContent = `🏆 ${winnerName} is the Winner! 🏆`;
+} else {
+    alert("No leaderboard data found!");
+    window.location.href = "game.html";
+}

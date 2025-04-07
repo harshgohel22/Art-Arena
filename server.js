@@ -83,6 +83,19 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle fetching the player list for the leaderboard
+    socket.on('getPlayerList', (roomCode) => {
+        if (rooms[roomCode]) {
+            const players = rooms[roomCode].players.map(player => ({
+                name: player.name,
+                character: player.character,
+            }));
+            socket.emit('updatePlayerList', players); // Send the player list to the client
+        } else {
+            socket.emit('roomError', 'Room does not exist.');
+        }
+    });
+
     // Handle disconnection
     socket.on('disconnect', () => {
         for (const roomCode in rooms) {

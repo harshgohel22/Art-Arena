@@ -14,6 +14,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
 }
 
 header h1 {
@@ -52,4 +53,25 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.doodle-container {
+    position: fixed;
+    /* Keeps the doodles fixed in place */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.doodle1 {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+}
+
+.link {
+    color: rgb(47, 223, 208);
 }

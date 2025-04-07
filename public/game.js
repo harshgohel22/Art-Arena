@@ -8,7 +8,7 @@ const timerElement = document.getElementById("timer");
 let isDrawing = false;
 let isErasing = false;
 let lastX = 0, lastY = 0;
-let timeLeft = 90; // 90 seconds
+let timeLeft = 1; // 60 seconds
 let timerStarted = false;
 let timerInterval;
 
@@ -108,6 +108,8 @@ function startTimer(duration, display) {
             clearInterval(timerInterval);
             display.textContent = "⏳ 00:00";
             isDrawing = false;
+
+            // Disable drawing tools
             canvas.removeEventListener("mousedown", startDrawing);
             canvas.removeEventListener("mousemove", draw);
             canvas.removeEventListener("mouseup", stopDrawing);
@@ -115,6 +117,16 @@ function startTimer(duration, display) {
             pencilBtn.disabled = true;
             eraserBtn.disabled = true;
             eraseAllBtn.disabled = true;
+
+            // Save the leaderboard data to localStorage
+            const leaderboardData = Array.from(document.querySelectorAll(".left-panel ul li")).map((li) => ({
+                name: li.textContent.trim(),
+                avatar: li.querySelector("img") ? li.querySelector("img").src : "",
+            }));
+            localStorage.setItem("leaderboardData", JSON.stringify(leaderboardData));
+
+            // Redirect to leaderboard.html
+            window.location.href = `leaderboard.html?roomCode=${roomCode}`;
         }
     }, 1000);
 }
@@ -165,7 +177,6 @@ if (!roomCode) {
 socket.on("updatePlayerList", (players) => {
     const playerList = document.querySelector(".left-panel ul");
     if (!playerList) {
-        // If the leaderboard container doesn't exist, create it
         const ul = document.createElement("ul");
         document.querySelector(".left-panel").appendChild(ul);
     }
