@@ -196,16 +196,6 @@ button {
     pointer-events: none;  /* Prevents interaction with the image */
     z-index: -1;  /* Places it behind the main content but above the blue background */
 }
-.doodle-container {
-    position: fixed; /* Keeps the doodles fixed in place */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* Prevents interaction with doodles */
-    z-index: -1; /* Places doodles behind the content */
-}
-
 
 .contact {
     display: inline-flex;
@@ -270,15 +260,6 @@ button {
     /* Prevents interaction with doodles */
     z-index: -1;
     /* Places doodles behind the content */
-}
-
-.doodle {
-    position: absolute;
-    width: 100px;
-    /* Default size, can be changed per image */
-    height: auto;
-    opacity: 0.8;
-    /* Slight transparency for aesthetic effect */
 }
 
 .doodle1 {
