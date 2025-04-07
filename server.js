@@ -118,6 +118,16 @@ function generateRoomCode() {
 }
 
 // Validate room code
+app.get('/validate-room/:roomCode', (req, res) => {
+    const roomCode = req.params.roomCode;
+    if (rooms[roomCode]) {
+        res.json({ valid: true });
+    } else {
+        res.json({ valid: false });
+    }
+});
+
+// Create a room for solo play
 app.get('/create-room', (req, res) => {
     const roomCode = generateRoomCode();
     rooms[roomCode] = { players: [], createdAt: Date.now() }; // Initialize the room
