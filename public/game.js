@@ -8,7 +8,7 @@ const timerElement = document.getElementById("timer");
 let isDrawing = false;
 let isErasing = false;
 let lastX = 0, lastY = 0;
-let timeLeft = 1; // 60 seconds
+let timeLeft = 60; // 60 seconds
 let timerStarted = false;
 let timerInterval;
 
