@@ -4,6 +4,7 @@ const pencilBtn = document.querySelector(".pencilBtn");
 const eraserBtn = document.querySelector(".eraserBtn");
 const eraseAllBtn = document.querySelector(".eraseAllBtn");
 const timerElement = document.getElementById("timer");
+const drawWordElement = document.getElementById("draw-word");
 
 let isDrawing = false;
 let isErasing = false;
@@ -11,7 +12,16 @@ let lastX = 0, lastY = 0;
 let timeLeft = 60; // 60 seconds
 let timerStarted = false;
 let timerInterval;
+let currentRound = 1;
+const totalRounds = 5;
 
+let model; // TensorFlow.js model for AI
+
+const words = ["airplane", "alarm clock", "backpack", "basketball", "bicycle", "butterfly", "cake", "castle", "elephant", "flower",
+    "guitar", "laptop", "pineapple", "pizza", "scissors", "snowflake", "strawberry", "tree", "watermelon", "wristwatch"];
+
+
+    
 // Set canvas size dynamically
 function setCanvasSize() {
     canvas.width = canvas.parentElement.clientWidth * 0.9;
@@ -22,6 +32,56 @@ function setCanvasSize() {
 
 window.addEventListener("resize", setCanvasSize);
 setCanvasSize();
+
+// Load the TensorFlow.js model
+async function loadModel() {
+    try {
+        model = await tf.loadLayersModel('/model/model.json');
+        console.log('AI model loaded successfully');
+    } catch (error) {
+        console.error('Error loading the AI model:', error);
+    }
+}
+
+// Preprocess the canvas drawing for AI input
+function preprocessCanvas(canvas) {
+    const ctx = canvas.getContext('2d');
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = tf.browser.fromPixels(imageData, 1) // Convert to grayscale
+        .resizeNearestNeighbor([28, 28]) // Resize to 28x28 (model input size)
+        .toFloat()
+        .div(255.0) // Normalize pixel values to [0, 1]
+        .expandDims(0); // Add batch dimension
+    return data;
+}
+
+// Evaluate the drawing and calculate the score
+async function evaluateDrawing(canvas, targetWord) {
+    if (!model) {
+        console.error('Model is not loaded yet!');
+        return 0;
+    }
+
+    const input = preprocessCanvas(canvas);
+    const prediction = model.predict(input);
+    const predictedIndex = prediction.argMax(-1).dataSync()[0]; // Get the predicted class index
+    const confidence = prediction.max().dataSync()[0]; // Get the confidence score (max probability)
+
+    // List of words corresponding to the model's classes
+
+    const predictedWord = words[predictedIndex];
+
+    console.log(`AI Prediction: ${predictedWord} (Confidence: ${confidence})`);
+
+    // Scoring logic
+    if (predictedWord === targetWord) {
+        const baseScore = 5;
+        const additionalScore = Math.round(confidence * 5);
+        return Math.min(baseScore + additionalScore, 10); // Max score is 10
+    } else {
+        return 0;
+    }
+}
 
 // Start drawing function
 function startDrawing(e) {
@@ -60,143 +120,41 @@ canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
 
-// Change cursor function
-function changeCursor(cursorURL) {
-    canvas.style.cursor = `url('${cursorURL}'), auto`;
+// Handle a single round of the game
+async function handleRound(targetWord) {
+    const score = await evaluateDrawing(canvas, targetWord);
+    console.log(`Score for this round: ${score}`);
+    alert(`Your score: ${score}`);
+
+    // Proceed to the next round
+    currentRound++;
+    if (currentRound > totalRounds) {
+        endGame();
+    } else {
+        startNextRound();
+    }
 }
 
-// Activate pencil mode
-pencilBtn.addEventListener("click", () => {
-    if (timerStarted && timeLeft > 0) {
-        isErasing = false;
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "black";
-        changeCursor("images/pencil.png");
-    }
-});
-
-// Activate eraser mode
-eraserBtn.addEventListener("click", () => {
-    if (timerStarted && timeLeft > 0) {
-        isErasing = true;
-        changeCursor("images/eraser.png");
-    }
-});
-
-// Erase all content
-eraseAllBtn.addEventListener("click", () => {
-    if (timerStarted && timeLeft > 0) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-});
-
-// Timer function
-function startTimer(duration, display) {
-    let timer = duration, minutes, seconds;
-    timerInterval = setInterval(() => {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = `⏳ ${minutes}:${seconds}`;
-
-        if (--timer < 0) {
-            clearInterval(timerInterval);
-            display.textContent = "⏳ 00:00";
-            isDrawing = false;
-
-            // Disable drawing tools
-            canvas.removeEventListener("mousedown", startDrawing);
-            canvas.removeEventListener("mousemove", draw);
-            canvas.removeEventListener("mouseup", stopDrawing);
-            canvas.removeEventListener("mouseout", stopDrawing);
-            pencilBtn.disabled = true;
-            eraserBtn.disabled = true;
-            eraseAllBtn.disabled = true;
-
-            // Save the leaderboard data to localStorage
-            const leaderboardData = Array.from(document.querySelectorAll(".left-panel ul li")).map((li) => ({
-                name: li.textContent.trim(),
-                avatar: li.querySelector("img") ? li.querySelector("img").src : "",
-            }));
-            localStorage.setItem("leaderboardData", JSON.stringify(leaderboardData));
-
-            // Redirect to leaderboard.html
-            window.location.href = `leaderboard.html?roomCode=${roomCode}`;
-        }
-    }, 1000);
+// Start the next round
+function startNextRound() {
+    console.log(`Starting round ${currentRound}...`);
+    resetCanvas();
+    const targetWord = getRandomWord();
+    drawWordElement.textContent = targetWord;
 }
 
-const socket = io();
-
-// Broadcast drawing data
-canvas.addEventListener('mousemove', (e) => {
-    if (isDrawing) {
-        const data = {
-            x: e.offsetX,
-            y: e.offsetY,
-            color: ctx.strokeStyle,
-            lineWidth: ctx.lineWidth,
-        };
-        socket.emit('drawing', data);
-    }
-});
-
-// Listen for drawing data from other players
-socket.on('drawing', (data) => {
-    ctx.strokeStyle = data.color;
-    ctx.lineWidth = data.lineWidth;
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(data.x, data.y);
-    ctx.stroke();
-    [lastX, lastY] = [data.x, data.y];
-});
-
-// Retrieve player information from localStorage
-const playerName = localStorage.getItem("playerName");
-const selectedCharacter = localStorage.getItem("selectedCharacter");
-
-// Validate room code before allowing access
-const urlParams = new URLSearchParams(window.location.search);
-const roomCode = urlParams.get('roomCode');
-
-if (!roomCode) {
-    alert('Room code is required to access the game.');
-    window.location.href = '/room.html';
-} else {
-    // Skip validation for auto-created rooms
-    socket.emit("joinRoom", { roomCode, playerName, selectedCharacter });
+// End the game
+function endGame() {
+    console.log('Game over!');
+    alert('Game over! Thanks for playing.');
 }
 
-// Listen for the updated player list from the server
-socket.on("updatePlayerList", (players) => {
-    const playerList = document.querySelector(".left-panel ul");
-    if (!playerList) {
-        const ul = document.createElement("ul");
-        document.querySelector(".left-panel").appendChild(ul);
-    }
-
-    playerList.innerHTML = ""; // Clear the current list
-
-    players.forEach((player) => {
-        const listItem = document.createElement("li");
-        listItem.innerHTML = `
-            <img src="${player.character}" class="avatar"> 
-            ${player.name}`;
-        playerList.appendChild(listItem);
-    });
-});
-
-// List of words for the game
-const words = [
-    "Car", "House", "Tree", "Dog", "Cat", "Sun", "Moon", "Star", "Boat", "Fish",
-    "Bird", "Flower", "Mountain", "River", "Chair", "Table", "Laptop", "Phone", "Book", "Clock"
-];
+// Utility functions
+function resetCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 // Function to randomly select a word
 function getRandomWord() {
@@ -204,19 +162,20 @@ function getRandomWord() {
     return words[randomIndex];
 }
 
-// Display the randomly selected word
-const drawWordElement = document.getElementById("draw-word");
+// Initialize the game
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadModel(); // Load the AI model when the page loads
+    startNextRound(); // Start the first round
+});
 
-if (roomCode) {
-    // Multiplayer: Request the word from the server
-    socket.emit("requestWord", roomCode);
-
-    // Listen for the selected word from the server
-    socket.on("wordSelected", (word) => {
-        drawWordElement.textContent = word;
-    });
-} else {
-    // Single-player: Select a random word locally
-    const selectedWord = getRandomWord();
-    drawWordElement.textContent = selectedWord;
+function startTimer(duration, display) {
+    let timer = duration;
+    timerInterval = setInterval(() => {
+        let seconds = timer % 60;
+        display.textContent = seconds < 10 ? `0:${seconds}` : `0:${seconds}`;
+        if (--timer < 0) {
+            clearInterval(timerInterval);
+            handleRound(drawWordElement.textContent); // Call handleRound on time up
+        }
+    }, 1000);
 }

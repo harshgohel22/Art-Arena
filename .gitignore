@@ -5,3 +5,9 @@ lib/
 numpy_practice.py
 pyvenv.cfg
 share/
+node_modules/
+tfenv/
+GoogleDraw_dataset/
+ai/verify_model.py
+.DS_Store
+__pycache__/
